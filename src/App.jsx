@@ -6,14 +6,16 @@ import { Notes } from "./pages/Notes";
 import { Profile } from "./pages/Profile";
 import { Test } from "./pages/Test";
 import { ToastContainer, toast } from "react-toastify";
+import { NavBar } from "./organisms/NavBar";
 
 export const App = () => {
-  const notification = () => toast.success("Welcome to the App!");
+  // const notification = () => toast.success("Welcome to the App!");
 
   return (
     <div>
-      <button onClick={notification}>Show Welcome Notification</button>
-      <ToastContainer />
+      {/* <button onClick={notification}>Show Welcome Notification</button>
+      <ToastContainer /> */}
+      <NavBar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forum" element={<Forum />} />
