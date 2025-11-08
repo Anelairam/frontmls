@@ -1,5 +1,5 @@
 {
-  "name": "frontlms",
+  "name": "frontmls",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,13 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.8.0",
-    "@tailwindcss/vite": "^4.1.16",
-    "dotenv": "^17.2.3",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.5",
-    "tailwindcss": "^4.1.16"
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
