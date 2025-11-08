@@ -5,11 +5,16 @@ import { Forum } from "./pages/Forum";
 import { Notes } from "./pages/Notes";
 import { Profile } from "./pages/Profile";
 import { Test } from "./pages/Test";
+import { ToastContainer, toast } from "react-toastify";
 
 export const App = () => {
+  const notification = () => toast.success("Welcome to the App!");
+
   return (
     <div>
-      <Routes> 
+      <button onClick={notification}>Show Welcome Notification</button>
+      <ToastContainer />
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/notes" element={<Notes />} />
