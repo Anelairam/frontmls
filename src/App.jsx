@@ -43,23 +43,5 @@ export const App = () => {
         )}
       </div>
     </div>
-    //   <div>
-    //     {/* <button onClick={notification}>Show Welcome Notification</button>
-    //     <ToastContainer /> */}
-    //     <NavBar/>
-    //     {isLoading? <div>Loading...</div>: <div>Ooops...<div/>}
-    //     {isAuthenticated ? (
-    //       <div>
-    //    <p>
-
-    //     Hello {user.name}
-    //     </p>
-    //     <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-    //         Log out
-    //       </button>
-    //     </div>) : (
-    //   <button onClick={() => loginWithRedirect()}>Log in</button>
-    // )}
-    // </div>
   );
 };
