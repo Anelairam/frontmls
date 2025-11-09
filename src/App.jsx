@@ -7,15 +7,16 @@ import { Profile } from "./pages/Profile";
 import { Test } from "./pages/Test";
 import { ToastContainer, toast } from "react-toastify";
 import { NavBar } from "./organisms/NavBar";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const App = () => {
   // const notification = () => toast.success("Welcome to the App!");
 
+  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
+    useAuth0();
   return (
     <div>
-      {/* <button onClick={notification}>Show Welcome Notification</button>
-      <ToastContainer /> */}
-      <NavBar/>
+        <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forum" element={<Forum />} />
@@ -23,6 +24,42 @@ export const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/test" element={<Test />} />
       </Routes>
+      <div>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : isAuthenticated ? (
+          <div>
+            <p>Hello {user.name}</p>
+            <button
+              onClick={() =>
+                logout({ logoutParams: { returnTo: window.location.origin } })
+              }
+            >
+              Log out
+            </button>
+          </div>
+        ) : (
+          <button onClick={() => loginWithRedirect()}>Log in</button>
+        )}
+      </div>
     </div>
+    //   <div>
+    //     {/* <button onClick={notification}>Show Welcome Notification</button>
+    //     <ToastContainer /> */}
+    //     <NavBar/>
+    //     {isLoading? <div>Loading...</div>: <div>Ooops...<div/>}
+    //     {isAuthenticated ? (
+    //       <div>
+    //    <p>
+
+    //     Hello {user.name}
+    //     </p>
+    //     <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+    //         Log out
+    //       </button>
+    //     </div>) : (
+    //   <button onClick={() => loginWithRedirect()}>Log in</button>
+    // )}
+    // </div>
   );
 };
