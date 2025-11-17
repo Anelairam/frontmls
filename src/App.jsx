@@ -8,15 +8,24 @@ import { Test } from "./pages/Test";
 import { ToastContainer, toast } from "react-toastify";
 import { NavBar } from "./organisms/NavBar";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 export const App = () => {
   // const notification = () => toast.success("Welcome to the App!");
 
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
     useAuth0();
+
+  const callApi = async () => {
+    try {
+      const apiCall = await axios.get("http://localhost:7878/buttonApi");
+    } catch (err) {
+      console.error("API call error:", err);
+    }
+  };
   return (
     <div>
-        <NavBar />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/forum" element={<Forum />} />
@@ -39,7 +48,11 @@ export const App = () => {
             </button>
           </div>
         ) : (
-          <button onClick={() => loginWithRedirect()}>Log in</button>
+          <div>
+            <button onClick={() => loginWithRedirect()}>Log in</button>
+            <hr/>
+            <button onClick={() => callApi()}>Call API</button>
+          </div>
         )}
       </div>
     </div>
