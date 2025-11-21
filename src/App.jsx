@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router";
 import { Home } from "./pages/Home";
 import { Forum } from "./pages/Forum";
@@ -15,19 +15,20 @@ export const App = () => {
 
   const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } =
     useAuth0();
-
-  const callApi = async () => {
-    try {
-      const apiCall = await axios.get("http://localhost:7878/buttonApi");
-    } catch (err) {
-      console.error("API call error:", err);
-    }
-  };
+  const [validatedUser, setValidatedUser] = useState();
   return (
     <div>
-      <NavBar />
+      <NavBar validatedUser={validatedUser}/>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              validatedUser={validatedUser}
+              setValidatedUser={setValidatedUser}
+            />
+          }
+        />
         <Route path="/forum" element={<Forum />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/profile" element={<Profile />} />
@@ -50,8 +51,6 @@ export const App = () => {
         ) : (
           <div>
             <button onClick={() => loginWithRedirect()}>Log in</button>
-            <hr/>
-            <button onClick={() => callApi()}>Call API</button>
           </div>
         )}
       </div>

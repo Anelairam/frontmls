@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
 
-export const NavBar = () => {
+export const NavBar = ({validatedUser}) => {
+  if (validatedUser) {
+    console.log("NavBar validatedUser:", validatedUser);
+  }
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm font-mono">

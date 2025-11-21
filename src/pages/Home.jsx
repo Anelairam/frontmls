@@ -1,64 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReCalendar } from "../organisms/ReCalendar";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import axios from "axios";
 
-export const Home = () => {
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
+export const Home = ({ validatedUser, setValidatedUser }) => {
+  const { user, isAuthenticated} =
     useAuth0();
-
   useEffect(() => {
-    console.log("useEffect triggered");
-    console.log("User info:", user);
-    // const sendTokenToBackend = async () => {
-    //   console.log("Preparing to send token to backend");
-    //   try {
-    // Get a valid token for your API
-    // const token = await getAccessTokenSilently({
-    //   audience: import.meta.env.VITE_AUTH_AUDIENCE,
-    // });
-    // const token = await getAccessTokenSilently();
-
-    // console.log("Obtained token:", token);
-
-    // Send token to your backend
-    // const response = await axios.get("https://localhost:7878/api/users/validate", {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`, // 👈 send token here
-    //   },
-    // });
-
-    // const data = await response.json();
-    //   console.log("Backend response:", data);
-    // } catch (err) {
-    //   console.error("Error sending token:", err);
-    // }
-    // };
-
-    // sendTokenToBackend();
-
-    const validateUserData = async () => {
+    const userDataValidation = async () => {
       try {
-        const info = await axios.post(
-          "http://localhost:7878/api/users/validate",
-          {
+        const response = await axios
+          .post("http://localhost:7878/api/users/validate", {
             user: user,
-          }
-        );
-        console.log("User validation response:", info.data);
+          })
+          .then((res) => {
+            setValidatedUser(res.data.user);
+            console.log("userData the variable", validatedUser);
+          });
       } catch (error) {
         console.error("Error validating user data:", error);
       }
     };
 
-    validateUserData();
-  }, [getAccessTokenSilently, user]);
+    if (user) userDataValidation();
+  }, [user]);
 
   return (
     <div className="grid grid-cols-4 gap-4 bg-amber-600">
       <div className="col-span-4 col-start-2 place-self-center">
-        {isAuthenticated ? <h2>Home</h2> : <h2>Go away</h2>}
+        {isAuthenticated ? (
+          <div>
+            <h2>Home</h2>
+            <p>Welcome, {validatedUser?.name}</p>
+            <p>Your role is : {validatedUser?.role}</p>
+          </div>
+        ) : (
+          <h2>Please login to be able to see the content</h2>
+        )}
       </div>
       {/* <ReCalendar /> */}
       <div>Today's List</div>
