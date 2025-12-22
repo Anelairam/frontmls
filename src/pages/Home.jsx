@@ -1,46 +1,53 @@
-import React, { useState } from "react";
-import { ReCalendar } from "../organisms/ReCalendar";
-import { useAuth0, User } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
-export const Home = ({ validatedUser, setValidatedUser }) => {
-  const { user, isAuthenticated} =
+export const Home = () => {
+  const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
-  useEffect(() => {
-    const userDataValidation = async () => {
-      try {
-        const response = await axios
-          .post("http://localhost:7878/api/users/validate", {
-            user: user,
-          })
-          .then((res) => {
-            setValidatedUser(res.data.user);
-            console.log("userData the variable", validatedUser);
-          });
-      } catch (error) {
-        console.error("Error validating user data:", error);
-      }
-    };
 
-    if (user) userDataValidation();
-  }, [user]);
+  const authenticateInBackend = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      console.log("token:", token);
+
+      const res = await axios.get("http://localhost:7878", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("res from backend:", res);
+    } catch (e) {
+      console.log("error: ", e);
+    }
+  };
+
+  console.log("isAuthenticated:", isAuthenticated);
 
   return (
-    <div className="grid grid-cols-4 gap-4 bg-amber-600">
-      <div className="col-span-4 col-start-2 place-self-center">
-        {isAuthenticated ? (
-          <div>
-            <h2>Home</h2>
-            <p>Welcome, {validatedUser?.name}</p>
-            <p>Your role is : {validatedUser?.role}</p>
-          </div>
+    <div>
+      <h1>Hello</h1>
+      <div>
+        {!isAuthenticated ? (
+          <button onClick={loginWithRedirect}>Login</button>
         ) : (
-          <h2>Please login to be able to see the content</h2>
+          <div>
+            <button onClick={authenticateInBackend}>
+              Authenticate in backend
+            </button>
+            <br />
+            <button
+              onClick={() =>
+                logout()
+              }
+            >
+              Logout
+            </button>
+          </div>
         )}
       </div>
-      {/* <ReCalendar /> */}
-      <div>Today's List</div>
     </div>
   );
 };
