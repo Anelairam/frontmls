@@ -8,17 +8,18 @@ export const Home = () => {
 
   const authenticateInBackend = async () => {
     try {
-      const token = await getAccessTokenSilently();
+      const token = await getAccessTokenSilently({
+        audience: import.meta.env.VITE_AUTH_AUDIENCE,
+        scope: "openid profile email",
+      });
 
-      console.log("token:", token);
-
-      const res = await axios.get("http://localhost:7878", {
+      const res = await axios.get("http://localhost:7878/user/validate", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log("res from backend:", res);
+      console.log("res from backend:", res.data);
     } catch (e) {
       console.log("error: ", e);
     }
@@ -38,13 +39,7 @@ export const Home = () => {
               Authenticate in backend
             </button>
             <br />
-            <button
-              onClick={() =>
-                logout()
-              }
-            >
-              Logout
-            </button>
+            <button onClick={() => logout()}>Logout</button>
           </div>
         )}
       </div>
