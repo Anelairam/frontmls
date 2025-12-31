@@ -10,16 +10,13 @@ export const useUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (!isAuthenticated) return;
-
       try {
         const token = await getAccessTokenSilently();
-
-        const res = await axios.get("http://localhost:7878/api/users/validate", {
+        const res = await axios.get("http://localhost:7878/user/validate", {
           headers: {
-            Authorization: `Bearer ${token}`,
-          },
+              Authorization: `Bearer ${token}`,
+           },
         });
-
         console.log("User profile fetched:", res.data);
 
         setUserProfile(res.data);
